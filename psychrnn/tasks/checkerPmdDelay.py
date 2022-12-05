@@ -6,7 +6,7 @@ Edited from the checkerPmd task.
 
 Tian Wang, Nov 26th, 2022
 Change the model to be 2 inputs: Il and Ir: represent the left and right evidence   
-Add a delay term after checkerboard onset (y will separate with a delay after checkerboard onset)
+Add a delay term after checkerboard onset (both x and y will separate with a delay after checkerboard onset)
 Delay can be random or can anti-correlate to coherence 
 """
 
@@ -168,6 +168,7 @@ class Checkerboard2AFC(Task):
 
         x_t = np.zeros(self.N_in)
 
+        # apply a delay on input 
         if t > target_onset + checker_onset + delay:
             x_t[:] = (params["noise"] ** 2) * np.sqrt(self.dt) * np.random.randn(2)
 
@@ -179,7 +180,7 @@ class Checkerboard2AFC(Task):
         # ----------------------------------
 
         y_t = np.zeros(self.N_out) + self.wait
-        # apply a delay before separation
+        # apply a delay on y: delay applied on x plus another 100ms
         if t > target_onset + checker_onset + delay + 100:
             y_t[correct_side] = self.hi
             y_t[abs(correct_side - 1)] = self.lo

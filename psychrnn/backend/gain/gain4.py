@@ -37,7 +37,7 @@ class Gain4(RNN):
 
 
 
-    def recurrent_timestep(self, rnn_in, state):
+    def recurrent_timestep(self, rnn_in, state, gainRep):
         """Recurrent time step.
 
         Given input and previous state, outputs the next state of the network.
@@ -55,7 +55,7 @@ class Gain4(RNN):
             ((1 - self.alpha) * state)
             + self.alpha
             * (
-                tf.matmul(self.transfer_function(state), self.get_effective_W_rec(), transpose_b=True, name="1")
+                tf.matmul(self.transfer_function(state*gainRep), self.get_effective_W_rec(), transpose_b=True, name="1")
                 + tf.matmul(
                     rnn_in, self.get_effective_W_in(), transpose_b=True, name="2"
                 )
@@ -159,22 +159,18 @@ class Gain4(RNN):
             this_input = tf.where(threshold_mask, threshold_input_mask, rnn_input)
 
             # same rule for gain as input
-            # this_gain = tf.where(threshold_mask2, threshold_g_mask, rnn_gain)
-            this_gain = rnn_gain
+            this_gain = tf.where(threshold_mask2, threshold_g_mask, rnn_gain)
+            # this_gain = rnn_gain
 
-            state = self.recurrent_timestep(this_input, state)
             # make gain N_batch * N_rec ()
             gainRep = tf.tile(this_gain, [1, self.N_rec])
 
-            # two choices to implement the gain: 
+            state = self.recurrent_timestep(this_input, state, gainRep)
 
-            # 1). add gainRep to state: 
-            # activation = self.transfer_function(state + gainRep)
-
-            # 2). multiply gain to firing rate
-            activation = tf.multiply(self.transfer_function(state), gainRep)
-            # or
-            # activation = self.transfer_function(tf.multiply(state, gainRep))
+            # multiply gain to firing rate
+            # activation = tf.multiply(self.transfer_function(state), gainRep)
+            # multiply gain to state
+            activation = self.transfer_function(tf.multiply(state, gainRep))
 
 
             output = self.output_timestep(activation)

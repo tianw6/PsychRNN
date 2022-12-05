@@ -9,8 +9,8 @@ clear all; close all; clc
 % checker = readtable("/net/derived/tianwang/psychRNNArchive/resultData/gain3_50kTrials_0.csv");
 
 % RNN with g0 additive
-% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gain3.mat").temp;
-% checker = readtable("~/Downloads/PsychRNN/checkerPmdGain3Additive.csv");
+temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gain3.mat").temp;
+checker = readtable("~/Downloads/PsychRNN/checkerPmdGain3Additive.csv");
 
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainA.mat").temp;
 % checker = readtable("~/code/behaviorRNN/PsychRNN/resultData/checkerPmdGain3Additive.csv");
@@ -32,13 +32,13 @@ clear all; close all; clc
 % On Tian's PC (for checkerPmd)
 
 % RNN with g0 additive
-% temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\gainA2022.mat").temp;
-% checker = readtable("D:\BU\ChandLab\PsychRNN\checkerPmdGain3Additive.csv");
+temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\gainA2022.mat").temp;
+checker = readtable("D:\BU\ChandLab\PsychRNN\resultData\checkerPmdGain3Additive.csv");
 
 
 % RNN with multiplicative gain
-temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\gainM2022.mat").temp;
-checker = readtable("D:/BU/chandLab/PsychRNN/checkerPmdGain4Multiply.csv");
+% temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\gainM.mat").temp;
+% checker = readtable("D:/BU/chandLab/PsychRNN/resultData/checkerPmdGain4Multiply.csv");
 
 % initial bias
 % temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\init.mat").temp;
@@ -98,7 +98,7 @@ left = checker.decision == 0;
 % state activity alignes to checkerboard onset, with 200ms before and 800
 % ms after
 before = 100;
-after = 900;
+after = 1200;
 
 alignState = [];
 for ii = 1 : c

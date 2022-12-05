@@ -168,8 +168,8 @@ class Checkerboard2AFC(Task):
 
         ######################## Tian added this: make x also have initial bias
 
-        x_t[0] = init_y_left
-        x_t[1] = init_y_right
+        # x_t[0] = init_y_left
+        # x_t[1] = init_y_right
 
         if t > target_onset + checker_onset:
             x_t[:] = (params["noise"] ** 2) * np.sqrt(self.dt) * np.random.randn(2)
@@ -183,10 +183,10 @@ class Checkerboard2AFC(Task):
 
         y_t = np.zeros(self.N_out)
 
-        # y_t[0] = init_y_left
-        # # make initial bias for left and right same
-        # # y_t[1] = init_y_left
-        # # initial bais for left and right different
+        y_t[0] = init_y_left
+        # make initial bias for left and right same
+        y_t[1] = init_y_left
+        # initial bais for left and right different
         # y_t[1] = init_y_right
 
         # add a initial bias term

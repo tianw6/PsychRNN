@@ -44,8 +44,8 @@ clear all; close all; clc
 % checker = readtable("D:/BU/chandLab/PsychRNN/resultData/checkerPmdGain4Multiply.csv");
 
 % initial bias
-% temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\init.mat").temp;
-% checker = readtable("D:/BU/chandLab/PsychRNN/resultData/checkerPmdInit.csv");
+temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\init.mat").temp;
+checker = readtable("D:/BU/chandLab/PsychRNN/resultData/checkerPmdInit.csv");
 
 % delay
 % temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\delay.mat").temp;
