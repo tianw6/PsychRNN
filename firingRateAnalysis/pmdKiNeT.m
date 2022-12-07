@@ -13,14 +13,16 @@ clear all; close all; clc
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainAg0.mat").temp;
 % checker = readtable("~/code/behaviorRNN/PsychRNN/resultData/checkerPmdGain3g0.csv");
 
-temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gain3.mat").temp;
-checker = readtable("~/Downloads/PsychRNN/checkerPmdGain3Additive.csv");
+% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainA2022.mat").temp;
+% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain3Additive.csv");
+
+temp = load("~/Documents/PsychRNN11022021/temp.mat").temp;
+checker = readtable("~/Documents/PsychRNN11022021/checkerPmdGain3Additive.csv");
 
 % RNN with multiplicative gain
-% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/resultData/checkerPmdGain4Multiply.csv");
-
-
+% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM2022.mat").temp;
+% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain4Multiply.csv");
+% 
 
 % On Tian's PC (for checkerPmd)
 
@@ -64,7 +66,7 @@ checker = readtable("~/Downloads/PsychRNN/checkerPmdGain3Additive.csv");
 % end
 % temp = max(temp, 0);
 
-% only choose trials with 95% RT
+%% only choose trials with 95% RT
 sortRT = sort(checker.decision_time);
 disp("95% RT threshold is: " + num2str(sortRT(size(checker,1)*0.95)))
 % rtThresh = checker.decision_time <= sortRT(5000*0.95);
@@ -79,10 +81,10 @@ temp = temp(:,:,rtThresh);
 
 %% look at 1 coh bin 
 
-bin1 = (checker.coherence_bin == 0.5 | checker.coherence_bin == -0.5);
-
-checker = checker(bin1, :);
-temp = temp(:,:,bin1);
+% bin1 = (checker.coherence_bin == 0.5 | checker.coherence_bin == -0.5);
+% 
+% checker = checker(bin1, :);
+% temp = temp(:,:,bin1);
 %% align data to checkerboard onset (target onset)
 
 RT = checker.decision_time;

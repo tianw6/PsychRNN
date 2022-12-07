@@ -109,7 +109,7 @@ class Checkerboard2AFC(Task):
         ##################### random delay:
         # params["delay"] = np.random.randint(self.delay_range[0], self.delay_range[1])
         ##################### delay correlated to coherence:
-        params["delay"] = (1-np.abs(0.5-params["coherence"]))*self.delay_range[1]
+        params["delay"] = (1-2*np.abs(0.5-params["coherence"]))*self.delay_range[1]
 
 
         return params

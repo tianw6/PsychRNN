@@ -12,22 +12,23 @@ clear all; close all; clc
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gain3.mat").temp;
 % checker = readtable("~/Downloads/PsychRNN/checkerPmdGain3Additive.csv");
 
-% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainA.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/resultData/checkerPmdGain3Additive.csv");
-
+% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainA2022.mat").temp;
+% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain3Additive.csv");
+% 
 
 % % RNN with multiplicative gain
-% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/resultData/checkerPmdGain4Multiply.csv");
-% 
+% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM2022.mat").temp;
+temp = load("~/code/behaviorRNN/PsychRNN/temp.mat").temp;
+checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain4Multiply.csv");
+
 
 % initial bias
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/init.mat").temp;
 % checker = readtable("~/code/behaviorRNN/PsychRNN/resultData/checkerPmdInit.csv");
 
 % delay
-% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/delay.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/resultData/checkerPmdDelay.csv");
+% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/delayCorr.mat").temp;
+% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdDelayCorr.csv");
 
 % On Tian's PC (for checkerPmd)
 
@@ -37,8 +38,8 @@ clear all; close all; clc
 
 
 % RNN with multiplicative gain
-temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\gainM2022.mat").temp;
-checker = readtable("D:/BU/chandLab/PsychRNN/checkerPmdGain4Multiply.csv");
+% temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\gainM2022.mat").temp;
+% checker = readtable("D:/BU/chandLab/PsychRNN/checkerPmdGain4Multiply.csv");
 
 % initial bias
 % temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\init.mat").temp;
@@ -98,7 +99,7 @@ left = checker.decision == 0;
 % state activity alignes to checkerboard onset, with 200ms before and 800
 % ms after
 before = 100;
-after = 900;
+after = 800;
 
 alignState = [];
 for ii = 1 : c
@@ -167,9 +168,9 @@ end
 % onset. So max RT that can be plotted is 2000ms
 
 rt = [100 250:50:700 1200];
-% rt = 100:100:800;
-% rt = 200:100:1200;
-rt = [100 175 250:50:500 1200];
+rt = 100:100:800;
+rt = [100:40:340 600];
+% rt = [100 175 250:50:500 1200];
 % cc = [
 %    0.6091    0.2826    0.7235
 % %     0.4279    0.3033    0.6875
@@ -197,7 +198,7 @@ for ii  = 1:length(rt)-1
 
     leftSelect = selectedTrials & left;
     rightSelect = selectedTrials & right;
-    leftTrajAve = mean(orthF([1 2 3],:,leftSelect), 3);
+    leftTrajAve = mean(orthF([1 2 3 ],:,leftSelect), 3);
     rightTrajAve = mean(orthF([1 2 3],:,rightSelect), 3);
     
     nTrials(ii) = sum(leftSelect)

@@ -20,10 +20,18 @@ clear all; close all; clc
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM.mat").temp;
 % checker = readtable("~/code/behaviorRNN/PsychRNN/resultData/checkerPmdGain4Multiply.csv");
 
+temp = load("~/code/behaviorRNN/PsychRNN/temp.mat").temp;
+checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain4Multiply.csv");
+
+
 % initial bias
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/init.mat").temp;
 % checker = readtable("~/code/behaviorRNN/PsychRNN/resultData/checkerPmdInit.csv");
-% 
+
+% delay
+% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/delayCorr.mat").temp;
+% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdDelayCorr.csv");
+
 
 % On Tian's PC (for checkerPmd)
 
@@ -44,8 +52,8 @@ clear all; close all; clc
 % checker = readtable("D:/BU/chandLab/PsychRNN/resultData/checkerPmdGain4Multiply.csv");
 
 % initial bias
-temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\init.mat").temp;
-checker = readtable("D:/BU/chandLab/PsychRNN/resultData/checkerPmdInit.csv");
+% temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\init.mat").temp;
+% checker = readtable("D:/BU/chandLab/PsychRNN/resultData/checkerPmdInit.csv");
 
 % delay
 % temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\delay.mat").temp;
@@ -97,9 +105,9 @@ train_x = trials1;
 train_y = RT(left);
 
 for ii = 1 : size(train_x,2)
-%     t1 = [squeeze(train_x(:,ii,:))', coh(left)];
-    t1 = [squeeze(train_x(:,ii,:))'];
-    
+    t1 = [squeeze(train_x(:,ii,:))', coh(left)];
+%     t1 = [squeeze(train_x(:,ii,:))'];
+%     t1 = coh(left);
     md1 = fitrlinear(t1, train_y, 'learner', 'leastsquares');
 
     label = predict(md1, t1);
@@ -144,7 +152,7 @@ end
 
 %% plot regression
 
-figure; hold on
+% figure; hold on
 
 t = linspace(-before/10, after/10, length(r2));
 
