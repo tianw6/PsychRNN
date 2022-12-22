@@ -5,8 +5,10 @@ clear all; close all; clc
 
 % addpath('/net/derived/tianwang/LabCode');
 % 
-% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gain3_50kTrials_0.mat").temp;
-% checker = readtable("/net/derived/tianwang/psychRNNArchive/resultData/gain3_50kTrials_0.csv");
+
+% vanilla RNN
+temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/vanilla2022.mat").temp;
+checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdBasic.csv");
 
 % RNN with g0 additive
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gain3.mat").temp;
@@ -14,12 +16,12 @@ clear all; close all; clc
 
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainA2022.mat").temp;
 % checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain3Additive.csv");
-% 
+
 
 % % RNN with multiplicative gain
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM2022.mat").temp;
-temp = load("~/code/behaviorRNN/PsychRNN/temp.mat").temp;
-checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain4Multiply.csv");
+% temp = load("~/code/behaviorRNN/PsychRNN/temp.mat").temp;
+% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain4Multiply.csv");
 
 
 % initial bias
@@ -169,7 +171,7 @@ end
 
 rt = [100 250:50:700 1200];
 rt = 100:100:800;
-rt = [100:40:340 600];
+% rt = [100:40:340 600];
 % rt = [100 175 250:50:500 1200];
 % cc = [
 %    0.6091    0.2826    0.7235

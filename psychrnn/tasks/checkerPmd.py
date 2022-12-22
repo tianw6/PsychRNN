@@ -177,9 +177,12 @@ class Checkerboard2AFC(Task):
         # ----------------------------------
 
         y_t = np.zeros(self.N_out) + self.wait
+
         if t > target_onset + checker_onset:
             y_t[correct_side] = self.hi
             y_t[abs(correct_side - 1)] = self.lo
+
+        #################    
 
         mask_t = np.ones(self.N_out)
         if (t > target_onset + checker_onset) and (t < target_onset + checker_onset + accumulation_mask):

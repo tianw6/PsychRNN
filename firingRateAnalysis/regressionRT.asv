@@ -169,10 +169,10 @@ r2 = r2 - r2_coh';
 
 figure; hold on
 
-t = linspace(-before, after, length(r2));
+t = linspace(-before/10, after/10, length(r2));
 
-ylimit = 0.5;
-xpatch = [-before -before 0 0];
+ylimit = 0.8;
+xpatch = [-before/10 -before/10 0 0];
 ypatch = [ylimit 0 0 ylimit];
 p1 = patch(xpatch, ypatch, 'cyan');
 p1.FaceAlpha = 0.2;
@@ -183,38 +183,38 @@ plot(t, r2, 'linewidth', 5, 'color', [236 112  22]./255)
 plot([0,0], [ylimit,0], 'color', [0.5 0.5 0.5], 'linestyle', '--', 'linewidth',5)
 title('Regression on RT', 'fontsize', 30)
 
-
-% cosmetic code
-hLimits = [-before,after];
-hTickLocations = -before:300:after;
-hLabOffset = 0.05;
-hAxisOffset =  -0.011;
-hLabel = "Time: ms"; 
-
-vLimits = [0,ylimit];
-vTickLocations = [0 ylimit/2 ylimit];
-vLabOffset = 150;
-vAxisOffset = -220;
-vLabel = "R^{2}"; 
-
-plotAxis = [1 1];
-
-[hp,vp] = getAxesP(hLimits,...
-    hTickLocations,...
-    hLabOffset,...
-    hAxisOffset,...
-    hLabel,...
-    vLimits,...
-    vTickLocations,...
-    vLabOffset,...
-    vAxisOffset,...
-    vLabel, plotAxis);
-
-set(gcf, 'Color', 'w');
-axis off; 
-axis square;
-axis tight;
-
+% 
+% % cosmetic code
+% hLimits = [-500,1000];
+% hTickLocations = -500:300:1000;
+% hLabOffset = 0.05;
+% hAxisOffset =  -0.011;
+% hLabel = "Time: ms"; 
+% 
+% vLimits = [0,ylimit];
+% vTickLocations = [0 ylimit/2 ylimit];
+% vLabOffset = 150;
+% vAxisOffset = -520;
+% vLabel = "R^{2}"; 
+% 
+% plotAxis = [1 1];
+% 
+% [hp,vp] = getAxesP(hLimits,...
+%     hTickLocations,...
+%     hLabOffset,...
+%     hAxisOffset,...
+%     hLabel,...
+%     vLimits,...
+%     vTickLocations,...
+%     vLabOffset,...
+%     vAxisOffset,...
+%     vLabel, plotAxis);
+% 
+% set(gcf, 'Color', 'w');
+% axis off; 
+% axis square;
+% axis tight;
+% 
 % 
 % save('./resultData/boundAr.mat', 'bounds');
 % save('./resultData/r2Ar.mat', 'r2');
