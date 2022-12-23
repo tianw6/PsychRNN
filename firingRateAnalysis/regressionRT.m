@@ -4,23 +4,21 @@ clear all; close all; clc
 % On linux work station (for checkerPmd)
 
 % vanilla RNN
-temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/vanilla2022.mat").temp;
-checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdBasic.csv");
+% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/vanilla2022.mat").temp;
+% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdBasic.csv");
 
 % RNN with g0 & gSlope additive
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainA.mat").temp;
 % checker = readtable("~/code/behaviorRNN/PsychRNN/resultData/checkerPmdGain3Additive.csv");
 
 % RNN with g0 additive
-% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainAg0.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/resultData/checkerPmdGain3g0.csv");
+% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainA2022.mat").temp;
+% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain3Additive.csv");
 
 
 % RNN with multiplicative gain
-% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/resultData/checkerPmdGain4Multiply.csv");
 
-% temp = load("~/code/behaviorRNN/PsychRNN/temp.mat").temp;
+% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM2022.mat").temp;
 % checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain4Multiply.csv");
 
 
@@ -29,8 +27,8 @@ checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdBasic.csv");
 % checker = readtable("~/code/behaviorRNN/PsychRNN/resultData/checkerPmdInit.csv");
 
 % delay
-% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/delayCorr.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdDelayCorr.csv");
+temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/delayCorr.mat").temp;
+checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdDelayCorr.csv");
 
 
 % On Tian's PC (for checkerPmd)
@@ -128,7 +126,7 @@ for ii = 1 : size(train_x,2)
     r2_coh(ii) = R2;
 end
 
-r2 = r2 - r2_coh';
+r2 = max(r2 - r2_coh', 0);
 
 
 % 
@@ -186,7 +184,7 @@ title('Regression on RT', 'fontsize', 30)
 
 % cosmetic code
 hLimits = [-before,after];
-hTickLocations = -before:300:after;
+hTickLocations = -before:200:after;
 hLabOffset = 0.05;
 hAxisOffset =  -0.011;
 hLabel = "Time: ms"; 
@@ -218,7 +216,7 @@ axis tight;
 % 
 % save('./resultData/boundAr.mat', 'bounds');
 % save('./resultData/r2Ar.mat', 'r2');
-% print('-painters','-depsc',['./resultFigure/', 'RTAr','.eps'], '-r300');
+% print('-painters','-depsc',['~/Desktop/', 'RTdelayC','.eps'], '-r300');
 
 %%
 

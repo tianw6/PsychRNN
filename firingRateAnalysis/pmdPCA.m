@@ -7,8 +7,8 @@ clear all; close all; clc
 % 
 
 % vanilla RNN
-temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/vanilla2022.mat").temp;
-checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdBasic.csv");
+% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/vanilla2022.mat").temp;
+% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdBasic.csv");
 
 % RNN with g0 additive
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gain3.mat").temp;
@@ -20,7 +20,6 @@ checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdBasic.csv");
 
 % % RNN with multiplicative gain
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM2022.mat").temp;
-% temp = load("~/code/behaviorRNN/PsychRNN/temp.mat").temp;
 % checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain4Multiply.csv");
 
 
@@ -29,8 +28,8 @@ checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdBasic.csv");
 % checker = readtable("~/code/behaviorRNN/PsychRNN/resultData/checkerPmdInit.csv");
 
 % delay
-% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/delayCorr.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdDelayCorr.csv");
+temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/delayCorr.mat").temp;
+checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdDelayCorr.csv");
 
 % On Tian's PC (for checkerPmd)
 
@@ -173,22 +172,23 @@ rt = [100 250:50:700 1200];
 rt = 100:100:800;
 % rt = [100:40:340 600];
 % rt = [100 175 250:50:500 1200];
-% cc = [
-%    0.6091    0.2826    0.7235
-% %     0.4279    0.3033    0.6875
-%     0.2588    0.3136    0.6353
-%     0.2510    0.4118    0.6980
-%     0.1765    0.6312    0.8588
-% %     0.1412    0.7450    0.8863
-%     0.3686    0.7490    0.5491
+
+cc = [
+   0.6091    0.2826    0.7235
+%     0.4279    0.3033    0.6875
+    0.2588    0.3136    0.6353
+    0.2510    0.4118    0.6980
+    0.1765    0.6312    0.8588
+%     0.1412    0.7450    0.8863
+    0.3686    0.7490    0.5491
 %     0.8941    0.7764    0.1530
-% %     0.8980    0.6548    0.1686
-% %     0.8863    0.5295    0.1608
-%     0.8980    0.4155    0.1647
-% ]
+    0.8980    0.6548    0.1686
+%     0.8863    0.5295    0.1608
+    0.8980    0.4155    0.1647
+]
 
 
-cc = jet(length(rt));
+% cc = jet(length(rt));
 
 % blue to red as RT increases
 % left: -; right: --
@@ -242,37 +242,37 @@ for ii  = 1:length(rt)-1
     
 end
 
-% set(gcf, 'Color', 'w');
-% axis off; 
-% axis square;
-% axis tight;
-% 
-% set(gca, 'LooseInset', [ 0 0 0 0 ]);
-% xlabel('PC1');
-% ylabel('PC2');
-% zlabel('PC3');
-% title('PCA based on RT', 'fontsize', 30);
-% axis vis3d;
-% 
-% % vanilla: view: [170 25]
-% % multiplicative: view: [110 -20]
-% % additive: view: [-110 -32]
-% 
-% view([-110,-32])
-% tv = ThreeVector(gca);
-% tv.axisInset = [0.2 0.2]; % in cm [left bottom]
-% tv.vectorLength = 2; % in cm
-% tv.textVectorNormalizedPosition = 1.3; 
-% tv.fontSize = 15; % font size used for axis labels
-% tv.fontColor = 'k'; % font color used for axis labels
-% tv.lineWidth = 3; % line width used for axis vectors
-% tv.lineColor = 'k'; % line color used for axis vectors
-% tv.update();
-% rotate3d on;
+set(gcf, 'Color', 'w');
+axis off; 
+axis square;
+axis tight;
 
-% print('-painters','-depsc',['./resultFigure/', 'PCAAr','.eps'], '-r300');
+set(gca, 'LooseInset', [ 0 0 0 0 ]);
+xlabel('PC1');
+ylabel('PC2');
+zlabel('PC3');
+title('PCA based on RT', 'fontsize', 30);
+axis vis3d;
 
-% axis equal
+% vanilla: view: [-63 59]
+% multiplicative: view: [-93 -61]
+% additive: view: [110 -20]
+
+view([-154 41])
+tv = ThreeVector(gca);
+tv.axisInset = [0.2 0.2]; % in cm [left bottom]
+tv.vectorLength = 2; % in cm
+tv.textVectorNormalizedPosition = 1.3; 
+tv.fontSize = 15; % font size used for axis labels
+tv.fontColor = 'k'; % font color used for axis labels
+tv.lineWidth = 3; % line width used for axis vectors
+tv.lineColor = 'k'; % line color used for axis vectors
+tv.update();
+rotate3d on;
+
+% print('-painters','-depsc',['~/Desktop/', 'PCAdelayC','.eps'], '-r300');
+
+axis equal
 %%
 
 for condId = 1:size(distV,1)
@@ -394,4 +394,4 @@ tv.lineColor = 'k'; % line color used for axis vectors
 tv.update();
 rotate3d on;
 
-print('-painters','-depsc',['./resultFigure/', 'PCAMr','.eps'], '-r300');
+% print('-painters','-depsc',['./resultFigure/', 'PCAMr','.eps'], '-r300');

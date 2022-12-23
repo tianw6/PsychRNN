@@ -8,8 +8,8 @@ clear all; close all; clc
 % On linux work station (for checkerPmd)
 
 % vanilla RNN
-temp = load("~/Downloads/PsychRNN/temp.mat").temp;
-checker = readtable("~/Downloads/PsychRNN/checkerPmdBasic0.75.csv");
+% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/vanilla2022.mat").temp;
+% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdBasic.csv");
 
 % RNN with g0 & gSlope additive
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainA.mat").temp;
@@ -33,8 +33,8 @@ checker = readtable("~/Downloads/PsychRNN/checkerPmdBasic0.75.csv");
 % checker = readtable("~/code/behaviorRNN/PsychRNN/resultData/checkerPmdInit.csv");
 
 % delay
-% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/delayCorr.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdDelayCorr.csv");
+temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/delayCorr.mat").temp;
+checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdDelayCorr.csv");
 
 
 % On Tian's PC (for checkerPmd)
@@ -127,10 +127,6 @@ extract2 = sort(index2(1:num));
 extract = [c1Trials(extract1); c2Trials(extract2)];
 
 
-
-
-
-
 train_x = alignState(:, :, extract);
 train_y = checker.decision(extract) - 1;
 
@@ -146,20 +142,61 @@ end
 
 %% plot classifier results 
 
+t = linspace(-before, after, length(accuracy));
+
 figure; hold on
-% x = linspace(-before, after, b);
-plot(accuracy)
+plot(t, accuracy,'linewidth', 3)
 yline(0.5, 'k--')
 xlabel('Time (ms)')
 ylabel('Accuracy')
-title('Prediction accuracy of binned spike counts')
+title('Prediction accuracy')
 
 
-% xline(0, 'color', [0.5 0.5 0.5], 'linestyle', '--')
-% xpatch = [0 0 -200 -200];
-% ypatch = [0 1 1 0];
-% p1 = patch(xpatch, ypatch, 'cyan');
-% p1.FaceAlpha = 0.2;
-% p1.EdgeAlpha = 0;
-% legend('1% percentile', '99% percentile', 'Predicted Accuracy', 'location', 'southwest')
+yLower = 0.4;
+yUpper = 1;
 
+xline(0, 'color', [0.5 0.5 0.5], 'linestyle', '--')
+xpatch = [yLower yLower -before -before];
+ypatch = [yLower yUpper yUpper yLower];
+p1 = patch(xpatch, ypatch, 'cyan');
+p1.FaceAlpha = 0.2;
+p1.EdgeAlpha = 0;
+
+
+
+
+% cosmetic code
+hLimits = [-before,after];
+hTickLocations = -before:200:after;
+hLabOffset = 0.05;
+hAxisOffset =  yLower - 0.01;
+hLabel = "Time: ms"; 
+
+
+vLimits = [yLower,yUpper];
+vTickLocations = [yLower (yLower + yUpper)/2 yUpper];
+
+
+vLabOffset = 150;
+vAxisOffset = -220;
+vLabel = "Accuracy"; 
+
+plotAxis = [1 1];
+
+[hp,vp] = getAxesP(hLimits,...
+    hTickLocations,...
+    hLabOffset,...
+    hAxisOffset,...
+    hLabel,...
+    vLimits,...
+    vTickLocations,...
+    vLabOffset,...
+    vAxisOffset,...
+    vLabel, plotAxis);
+
+set(gcf, 'Color', 'w');
+axis off; 
+axis square;
+axis tight;
+
+% print('-painters','-depsc',['~/Desktop/', 'DecoderdelayC','.eps'], '-r300');
