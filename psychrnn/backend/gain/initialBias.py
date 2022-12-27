@@ -32,7 +32,7 @@ class Basic2(Basic):
         )
         self.decision_threshold = params.get("decision_threshold", np.inf)
 
-        self.input_mask = np.ones((self.N_rec, self.N_in))
+        self.input_mask = input_mask
 
     def recurrent_timestep(self, rnn_in, state, input_mask):
         """Recurrent time step.
@@ -132,7 +132,7 @@ class Basic2(Basic):
         for rnn_input in rnn_inputs:
             this_input = tf.where(threshold_mask, threshold_input_mask, rnn_input)
 
-            state = self.recurrent_timestep(this_input, state, input_mask)
+            state = self.recurrent_timestep(this_input, state, self.input_mask)
             activation = self.transfer_function(state)
             output = self.output_timestep(activation)
             
