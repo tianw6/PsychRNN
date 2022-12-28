@@ -17,19 +17,18 @@ clear all; close all; clc
 
 
 % RNN with multiplicative gain
-
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM2022.mat").temp;
 % checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain4Multiply.csv");
 
 
 % initial bias
-% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/init.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/resultData/checkerPmdInit.csv");
+temp = load("/home/tianwang/code/behaviorRNN/PsychRNN/temp.mat").temp;
+checker = readtable("/home/tianwang/code/behaviorRNN/PsychRNN/checkerPmdInit.csv");
 
 % delay
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/delayCorr.mat").temp;
 % checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdDelayCorr.csv");
-
+% 
 
 % On Tian's PC (for checkerPmd)
 
@@ -50,8 +49,8 @@ clear all; close all; clc
 % checker = readtable("D:/BU/chandLab/PsychRNN/resultData/checkerPmdGain4Multiply.csv");
 
 % initial bias
-temp = load("D:\BU\ChandLab\PsychRNN\temp.mat").temp;
-checker = readtable("D:/BU/chandLab/PsychRNN/checkerPmdInit.csv");
+% temp = load("D:\BU\ChandLab\PsychRNN\temp.mat").temp;
+% checker = readtable("D:/BU/chandLab/PsychRNN/checkerPmdInit.csv");
 
 % delay
 % temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\delay.mat").temp;
@@ -178,7 +177,7 @@ p1.EdgeAlpha = 0;
 
 % plot(t, bounds', '--', 'linewidth', 5);
 plot(t, r2, 'linewidth', 5, 'color', [236 112  22]./255)
-yline(r2_coh)
+plot(t, r2_coh)
 
 plot([0,0], [ylimit,0], 'color', [0.5 0.5 0.5], 'linestyle', '--', 'linewidth',5)
 title('Regression on RT', 'fontsize', 30)

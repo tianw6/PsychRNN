@@ -104,11 +104,8 @@ end
 accuracy = zeros(b, 1);
 
 % equalize left and right trials
-% c1Trials = find(checker.decision == 0 & RT > 500 & RT < 1500 & abs(checker.coherence_bin) <=0.2);
-% c2Trials = find(checker.decision == 1 & RT < 500 & RT < 1500 & abs(checker.coherence_bin) <=0.2);
-c1Trials = find(checker.decision == 0 & RT < 300);
+c1Trials = find(checker.decision == 0 & RT < 300 & checker.coherence_bin = );
 c2Trials = find(checker.decision == 1 & RT < 300);
-
 num = min(length(c1Trials), length(c2Trials));
 
 

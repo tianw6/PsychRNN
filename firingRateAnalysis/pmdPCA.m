@@ -24,8 +24,8 @@ clear all; close all; clc
 
 
 % initial bias
-% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/init.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/resultData/checkerPmdInit.csv");
+temp = load("/home/tianwang/code/behaviorRNN/PsychRNN/temp.mat").temp;
+checker = readtable("/home/tianwang/code/behaviorRNN/PsychRNN/checkerPmdInit.csv");
 
 % delay
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/delayCorr.mat").temp;
@@ -43,8 +43,8 @@ clear all; close all; clc
 % checker = readtable("D:/BU/chandLab/PsychRNN/checkerPmdGain4Multiply.csv");
 
 % initial bias
-temp = load("D:\BU\ChandLab\PsychRNN\temp.mat").temp;
-checker = readtable("D:/BU/chandLab/PsychRNN/checkerPmdInit.csv");
+% temp = load("D:\BU\ChandLab\PsychRNN\temp.mat").temp;
+% checker = readtable("D:/BU/chandLab/PsychRNN/checkerPmdInit.csv");
 
 % delay
 % temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\delay.mat").temp;
@@ -170,6 +170,7 @@ end
 
 rt = [100 250:50:700 1200];
 rt = 100:100:800;
+% rt = [100 250 400 600 800];
 % rt = [100:40:340 600];
 % rt = [100 175 250:50:500 1200];
 
