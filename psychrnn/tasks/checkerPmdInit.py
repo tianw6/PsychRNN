@@ -10,7 +10,7 @@ Make initial different for each trial
 """
 
 
-class Checkerboard2AFC(Task):
+class Init(Task):
     """Checkerboard 2AFC task.
 
     On each trial the network receives two simultaneous inputs
@@ -168,7 +168,7 @@ class Checkerboard2AFC(Task):
 
         ######################## Tian added this: make x also have initial bias
 
-        # x_t[0] = init_y_left
+        x_t[0] = init_y_left
         # x_t[1] = init_y_right
 
         if t > target_onset + checker_onset:
@@ -181,11 +181,11 @@ class Checkerboard2AFC(Task):
         # Generate output and mask
         # ----------------------------------
 
-        y_t = np.zeros(self.N_out)
+        y_t = np.zeros(self.N_out) + 0.2
 
-        y_t[0] = init_y_left
+        # y_t[0] = init_y_left
         # make initial bias for left and right same
-        y_t[1] = init_y_left
+        # y_t[1] = init_y_left
         # initial bais for left and right different
         # y_t[1] = init_y_right
 

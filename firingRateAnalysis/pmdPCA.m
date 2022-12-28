@@ -28,8 +28,8 @@ clear all; close all; clc
 % checker = readtable("~/code/behaviorRNN/PsychRNN/resultData/checkerPmdInit.csv");
 
 % delay
-temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/delayCorr.mat").temp;
-checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdDelayCorr.csv");
+% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/delayCorr.mat").temp;
+% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdDelayCorr.csv");
 
 % On Tian's PC (for checkerPmd)
 
@@ -43,8 +43,8 @@ checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdDelayCorr.csv");
 % checker = readtable("D:/BU/chandLab/PsychRNN/checkerPmdGain4Multiply.csv");
 
 % initial bias
-% temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\init.mat").temp;
-% checker = readtable("D:/BU/chandLab/PsychRNN/resultData/checkerPmdInit.csv");
+temp = load("D:\BU\ChandLab\PsychRNN\temp.mat").temp;
+checker = readtable("D:/BU/chandLab/PsychRNN/checkerPmdInit.csv");
 
 % delay
 % temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\delay.mat").temp;
@@ -241,38 +241,38 @@ for ii  = 1:length(rt)-1
 
     
 end
-
-set(gcf, 'Color', 'w');
-axis off; 
-axis square;
-axis tight;
-
-set(gca, 'LooseInset', [ 0 0 0 0 ]);
-xlabel('PC1');
-ylabel('PC2');
-zlabel('PC3');
-title('PCA based on RT', 'fontsize', 30);
-axis vis3d;
-
-% vanilla: view: [-63 59]
-% multiplicative: view: [-93 -61]
-% additive: view: [110 -20]
-
-view([-154 41])
-tv = ThreeVector(gca);
-tv.axisInset = [0.2 0.2]; % in cm [left bottom]
-tv.vectorLength = 2; % in cm
-tv.textVectorNormalizedPosition = 1.3; 
-tv.fontSize = 15; % font size used for axis labels
-tv.fontColor = 'k'; % font color used for axis labels
-tv.lineWidth = 3; % line width used for axis vectors
-tv.lineColor = 'k'; % line color used for axis vectors
-tv.update();
-rotate3d on;
-
-% print('-painters','-depsc',['~/Desktop/', 'PCAdelayC','.eps'], '-r300');
-
-axis equal
+% 
+% set(gcf, 'Color', 'w');
+% axis off; 
+% axis square;
+% axis tight;
+% 
+% set(gca, 'LooseInset', [ 0 0 0 0 ]);
+% xlabel('PC1');
+% ylabel('PC2');
+% zlabel('PC3');
+% title('PCA based on RT', 'fontsize', 30);
+% axis vis3d;
+% 
+% % vanilla: view: [-63 59]
+% % multiplicative: view: [-93 -61]
+% % additive: view: [110 -20]
+% 
+% view([-154 41])
+% tv = ThreeVector(gca);
+% tv.axisInset = [0.2 0.2]; % in cm [left bottom]
+% tv.vectorLength = 2; % in cm
+% tv.textVectorNormalizedPosition = 1.3; 
+% tv.fontSize = 15; % font size used for axis labels
+% tv.fontColor = 'k'; % font color used for axis labels
+% tv.lineWidth = 3; % line width used for axis vectors
+% tv.lineColor = 'k'; % line color used for axis vectors
+% tv.update();
+% rotate3d on;
+% 
+% % print('-painters','-depsc',['~/Desktop/', 'PCAdelayC','.eps'], '-r300');
+% 
+% axis equal
 %%
 
 for condId = 1:size(distV,1)

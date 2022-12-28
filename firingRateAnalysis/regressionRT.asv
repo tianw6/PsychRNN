@@ -169,7 +169,7 @@ figure; hold on
 
 t = linspace(-before, after, length(r2));
 
-ylimit = 0.7;
+ylimit = 0.5;
 xpatch = [-before -before 0 0];
 ypatch = [ylimit 0 0 ylimit];
 p1 = patch(xpatch, ypatch, 'cyan');
@@ -178,8 +178,6 @@ p1.EdgeAlpha = 0;
 
 % plot(t, bounds', '--', 'linewidth', 5);
 plot(t, r2, 'linewidth', 5, 'color', [236 112  22]./255)
-yline(r2_coh)
-
 plot([0,0], [ylimit,0], 'color', [0.5 0.5 0.5], 'linestyle', '--', 'linewidth',5)
 title('Regression on RT', 'fontsize', 30)
 
