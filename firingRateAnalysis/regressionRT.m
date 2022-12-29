@@ -17,13 +17,13 @@ clear all; close all; clc
 
 
 % RNN with multiplicative gain
-% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM2022.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain4Multiply.csv");
+temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM2022.mat").temp;
+checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain4Multiply.csv");
 
 
 % initial bias
-temp = load("/home/tianwang/code/behaviorRNN/PsychRNN/temp.mat").temp;
-checker = readtable("/home/tianwang/code/behaviorRNN/PsychRNN/checkerPmdInit.csv");
+% temp = load("/home/tianwang/code/behaviorRNN/PsychRNN/temp.mat").temp;
+% checker = readtable("/home/tianwang/code/behaviorRNN/PsychRNN/checkerPmdInit.csv");
 
 % delay
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/delayCorr.mat").temp;
@@ -114,16 +114,14 @@ for ii = 1 : size(train_x,2)
 end
 
 % variance explained by only coherence
-for ii = 1 : size(train_x,2)
+t2 = coh(left);
+md2 = fitrlinear(t2, train_y, 'learner', 'leastsquares');
 
-    t2 = coh(left);
-    md2 = fitrlinear(t2, train_y, 'learner', 'leastsquares');
+label = predict(md2, t2);
+R = corrcoef(label, train_y);
+R2 = R(1,2).^2;
+r2_coh = R2;
 
-    label = predict(md2, t2);
-    R = corrcoef(label, train_y);
-    R2 = R(1,2).^2;
-    r2_coh(ii) = R2;
-end
 
 % r2 = max(r2 - r2_coh', 0);
 
@@ -177,7 +175,7 @@ p1.EdgeAlpha = 0;
 
 % plot(t, bounds', '--', 'linewidth', 5);
 plot(t, r2, 'linewidth', 5, 'color', [236 112  22]./255)
-plot(t, r2_coh)
+yline(r2_coh)
 
 plot([0,0], [ylimit,0], 'color', [0.5 0.5 0.5], 'linestyle', '--', 'linewidth',5)
 title('Regression on RT', 'fontsize', 30)
