@@ -1,3 +1,6 @@
+% Created by Tian Wang on Dec.29th 2022: function to predict RT 
+
+
 function [r2, r2_coh] = predictRT(alignState, checker)
 
 % input:
@@ -10,11 +13,13 @@ function [r2, r2_coh] = predictRT(alignState, checker)
 %     shuffled_r2: all R^2 after 100 times shuffle
 %     bounds: 1 and 99 percentile of shuffled_r2
 
+alignState = alignState + eps;
 RT = checker.decision_time;
 % left & right trials
 right = checker.decision == 1;
 left = checker.decision == 0;
-coh = checker.coherence;
+
+coh = abs(checker.coherence);
 
 trials1 = alignState(:,:,left);
 trials2 = alignState(:,:,right);
@@ -25,12 +30,12 @@ r2 = zeros(size(trials1,2), 1);
 train_x = trials1;
 train_y = RT(left);
 
-for ii = 1 : size(train_x,2)
+for ii = 1 :size(train_x,2)
+    fprintf('%d.',ii);
     t1 = [squeeze(train_x(:,ii,:))', coh(left)];
 %     t1 = [squeeze(train_x(:,ii,:))'];
 %     t1 = coh(left);
     md1 = fitrlinear(t1, train_y, 'learner', 'leastsquares');
-
     label = predict(md1, t1);
     R = corrcoef(label, train_y);
     R2 = R(1,2).^2;

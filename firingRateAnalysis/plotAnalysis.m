@@ -4,6 +4,8 @@
 % aligned to checkerboard
 clear all; close all; clc
 
+addpath('/net/derived/tianwang/LabCode');
+
 % On linux work station (for checkerPmd)
 
 % addpath('/net/derived/tianwang/LabCode');
@@ -85,88 +87,103 @@ checkerOnR = round(checkerOn + targetOn, -1);
 % state activity alignes to checkerboard onset, with 200ms before and 800
 % ms after
 before = 200;
-after = 800;
+after = 500;
 
 alignState = [];
 for ii = 1 : c
     zeroPt = checkerOnR(ii)./10 + 1;
-    alignState(:,:,ii) = temp(:,zeroPt - before/10+1:zeroPt + after/10, ii);
+    alignState(:,:,ii) = temp(:,zeroPt - before/10:zeroPt + after/10, ii);
 end
 
 [a, b, c] = size(alignState);
 
 %% plot pca plots: 
 
-figure;
-set(gcf,'position',[1000,1000,2000,600])
 
 
 
 options.handle = subplot(1,3,1);
 options.span = [-before, after];
 options.type = 'RT';
-options.rtBin = 50:50:400;
-options.rtThreshold = 200;
-% options.thresholdSide = 'less';
+% options.rtBin = 50:50:400;
+options.rtThreshold = prctile(RTR,50);
+
+% vanilla: [-111,65];
+% multiplicative: [100 -41];
+% initial condiiton: [-111,65];
+% delay: [-111,65]
+options.viewAngle = [100,-42];
+options.orthDim = [1 2 3];
 % figure handle; before & after; switch between coh and RT pca; RT bins
 generatePCA(alignState, checker, options);
 
 
 %% plot RT regression
 
+%%%%%%%%%%%%%%%%%%%%%%%% calculate regression every 5 time points
+figure;
+set(gcf,'position',[1000,1000,2000,600])
 
 % figure handle; 
 [r2, r2_coh] = predictRT(alignState, checker);
 
 subplot(1,3,2); hold on
 
-t = linspace(-before+20, after, length(r2));
+t = linspace(-before, after, length(r2));
 
-ylimit = 0.7;
+% vanilla: [0,0.7];
+% multiplicative: [0.2 0.8];
+% initial: [0 0.8];
+% delay: [0.4 0.8]
+
+yLower = 0.2;
+yUpper = 0.8;
+
+ylimit = [yLower, yUpper]
 xpatch = [-before -before 0 0];
-ypatch = [ylimit 0 0 ylimit];
+ypatch = [yLower yUpper yUpper yLower];
 p1 = patch(xpatch, ypatch, 'cyan');
 p1.FaceAlpha = 0.2;
 p1.EdgeAlpha = 0;
 
 % plot(t, bounds', '--', 'linewidth', 5);
-plot(t, r2, 'linewidth', 5, 'color', [236 112  22]./255)
-yline(r2_coh)
+plot(t(1:4:end), r2(1:4:end), 'linewidth', 5, 'color', [236 112  22]./255)
+yline(r2_coh, '--')
 
-plot([0,0], [ylimit,0], 'color', [0.5 0.5 0.5], 'linestyle', '--', 'linewidth',5)
+plot([0,0], ylimit, 'color', [0.5 0.5 0.5], 'linestyle', '--', 'linewidth',5)
 title('Regression on RT', 'fontsize', 30)
 
-% 
-% % cosmetic code
-% hLimits = [-before,after];
-% hTickLocations = -before:200:after;
-% hLabOffset = 0.05;
-% hAxisOffset =  -0.011;
-% hLabel = "Time: ms"; 
-% 
-% vLimits = [0,ylimit];
-% vTickLocations = [0 ylimit/2 ylimit];
-% vLabOffset = 150;
-% vAxisOffset = -220;
-% vLabel = "R^{2}"; 
-% 
-% plotAxis = [1 1];
-% 
-% [hp,vp] = getAxesP(hLimits,...
-%     hTickLocations,...
-%     hLabOffset,...
-%     hAxisOffset,...
-%     hLabel,...
-%     vLimits,...
-%     vTickLocations,...
-%     vLabOffset,...
-%     vAxisOffset,...
-%     vLabel, plotAxis);
-% 
-% set(gcf, 'Color', 'w');
-% axis off; 
-% axis square;
-% axis tight;
+
+% cosmetic code
+hLimits = [-before,after];
+hTickLocations = -before:200:after;
+hLabOffset = 0.05;
+hAxisOffset = yLower-0.01;
+hLabel = "Time: ms"; 
+
+vLimits = ylimit;
+vTickLocations = [yLower (yLower + yUpper)/2 yUpper];
+vLabOffset = 150;
+vAxisOffset = -before-20;
+vLabel = "R^{2}"; 
+
+plotAxis = [1 1];
+
+[hp,vp] = getAxesP(hLimits,...
+    hTickLocations,...
+    hLabOffset,...
+    hAxisOffset,...
+    hLabel,...
+    vLimits,...
+    vTickLocations,...
+    vLabOffset,...
+    vAxisOffset,...
+    vLabel, plotAxis);
+
+set(gcf, 'Color', 'w');
+axis off; 
+axis square;
+axis tight;
 
 % 
 % save('./resultData/boundAr.mat', 'bounds');
@@ -177,77 +194,88 @@ title('Regression on RT', 'fontsize', 30)
 %% plot decoder results
 
 % figure handle;fast or slow
-accuracy = predictChoice(alignState, checker, options, 'less');
 
-t = linspace(-before+20, after, length(accuracy));
 
+
+accuracy_fast = predictChoice(alignState, checker, options, 'less');
+accuracy_slow = predictChoice(alignState, checker, options, 'greater');
+t = linspace(-before, after, length(accuracy_fast));
+
+
+% plot fast trials decoding accuracy
 subplot(1,3,3); hold on
-plot(t, accuracy,'linewidth', 3)
+
+yLower = 0.4;
+yUpper = 1;
+
+xpatch = [yLower yLower -before -before];
+ypatch = [yLower yUpper yUpper yLower];
+p1 = patch(xpatch, ypatch, 'cyan');
+p1.FaceAlpha = 0.2;
+p1.EdgeAlpha = 0;
+
+plot(t, accuracy_fast,'linewidth', 3)
+yline(0.5, 'k--')
+xlabel('Time (ms)')
+ylabel('Accuracy')
+title('Prediction accuracy')
+
+% plot slow trials decoding accuracy
+subplot(1,3,3); hold on
+plot(t, accuracy_slow,'linewidth', 3)
 yline(0.5, 'k--')
 xlabel('Time (ms)')
 ylabel('Accuracy')
 title('Prediction accuracy')
 
 
-accuracy = predictChoice(alignState, checker, options, 'greater');
-subplot(1,3,3); hold on
-plot(t, accuracy,'linewidth', 3)
-yline(0.5, 'k--')
-xlabel('Time (ms)')
-ylabel('Accuracy')
-title('Prediction accuracy')
 
-% yLower = 0.4;
-% yUpper = 1;
-% 
-% xline(0, 'color', [0.5 0.5 0.5], 'linestyle', '--')
-% xpatch = [yLower yLower -before -before];
-% ypatch = [yLower yUpper yUpper yLower];
-% p1 = patch(xpatch, ypatch, 'cyan');
-% p1.FaceAlpha = 0.2;
-% p1.EdgeAlpha = 0;
+xline(0, 'color', [0.5 0.5 0.5], 'linestyle', '--')
 
 
-% 
-% 
-% % cosmetic code
-% hLimits = [-before,after];
-% hTickLocations = -before:200:after;
-% hLabOffset = 0.05;
-% hAxisOffset =  yLower - 0.01;
-% hLabel = "Time: ms"; 
-% 
-% 
-% vLimits = [yLower,yUpper];
-% vTickLocations = [yLower (yLower + yUpper)/2 yUpper];
-% 
-% 
-% vLabOffset = 150;
-% vAxisOffset = -220;
-% vLabel = "Accuracy"; 
-% 
-% plotAxis = [1 1];
-% 
-% [hp,vp] = getAxesP(hLimits,...
-%     hTickLocations,...
-%     hLabOffset,...
-%     hAxisOffset,...
-%     hLabel,...
-%     vLimits,...
-%     vTickLocations,...
-%     vLabOffset,...
-%     vAxisOffset,...
-%     vLabel, plotAxis);
-% 
-% set(gcf, 'Color', 'w');
-% axis off; 
-% axis square;
-% axis tight;
+
+
+% cosmetic code
+hLimits = [-before,after];
+hTickLocations = -before:200:after;
+hLabOffset = 0.05;
+hAxisOffset =  yLower - 0.01;
+hLabel = "Time: ms"; 
+
+
+vLimits = [yLower,yUpper];
+vTickLocations = [yLower (yLower + yUpper)/2 yUpper];
+
+
+vLabOffset = 150;
+vAxisOffset = -before-20;
+vLabel = "Accuracy"; 
+
+plotAxis = [1 1];
+
+[hp,vp] = getAxesP(hLimits,...
+    hTickLocations,...
+    hLabOffset,...
+    hAxisOffset,...
+    hLabel,...
+    vLimits,...
+    vTickLocations,...
+    vLabOffset,...
+    vAxisOffset,...
+    vLabel, plotAxis);
+
+set(gcf, 'Color', 'w');
+axis off; 
+axis square;
+axis tight;
 
 % print('-painters','-depsc',['~/Desktop/', 'DecoderdelayC','.eps'], '-r300');
 
 
 
+%% store figure
+
+% print('-painters','-depsc',['~/Desktop/', 'gainM','.eps'], '-r300');
 
 
 

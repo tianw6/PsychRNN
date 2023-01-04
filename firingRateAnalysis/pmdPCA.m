@@ -19,8 +19,8 @@ clear all; close all; clc
 
 
 % % RNN with multiplicative gain
-% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM2022.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain4Multiply.csv");
+temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM2022.mat").temp;
+checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain4Multiply.csv");
 
 
 % initial bias
@@ -170,21 +170,24 @@ end
 
 rt = [100 250:50:700 1200];
 rt = 100:100:800;
+
+rt = [prctile(RTR,[20:10:90])];
+
 % rt = [100 250 400 600 800];
 % rt = [100:40:340 600];
 % rt = [100 175 250:50:500 1200];
 
 cc = [
    0.6091    0.2826    0.7235
-%     0.4279    0.3033    0.6875
+    0.4279    0.3033    0.6875
     0.2588    0.3136    0.6353
     0.2510    0.4118    0.6980
     0.1765    0.6312    0.8588
-%     0.1412    0.7450    0.8863
+    0.1412    0.7450    0.8863
     0.3686    0.7490    0.5491
-%     0.8941    0.7764    0.1530
+    0.8941    0.7764    0.1530
     0.8980    0.6548    0.1686
-%     0.8863    0.5295    0.1608
+    0.8863    0.5295    0.1608
     0.8980    0.4155    0.1647
 ]
 
@@ -193,7 +196,7 @@ cc = [
 
 % blue to red as RT increases
 % left: -; right: --
-figure();
+figure(); 
 distV = [];
 nTrials = [];
 for ii  = 1:length(rt)-1
@@ -201,8 +204,8 @@ for ii  = 1:length(rt)-1
 
     leftSelect = selectedTrials & left;
     rightSelect = selectedTrials & right;
-    leftTrajAve = mean(orthF([1 2 3 ],:,leftSelect), 3);
-    rightTrajAve = mean(orthF([1 2 3],:,rightSelect), 3);
+    leftTrajAve = mean(orthF([1 2  3  ],:,leftSelect), 3);
+    rightTrajAve = mean(orthF([1 2 3 ],:,rightSelect), 3);
     
     nTrials(ii) = sum(leftSelect)
   

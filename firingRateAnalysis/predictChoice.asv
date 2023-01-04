@@ -1,4 +1,7 @@
-function [accuracy] = predictChoice1(alignState, checker, options, varargin)
+% Created by Tian Wang on Dec.29th 2022: function to predi
+
+
+function [accuracy] = predictChoice1(alignState, checker, options, thresholdSide)
     
 
     rtThreshold = options.rtThreshold;

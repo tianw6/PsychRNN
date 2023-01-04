@@ -1,3 +1,6 @@
+% Created by Tian Wang on Dec.29th 2022: function to predict choice
+
+
 function [accuracy] = predictChoice1(alignState, checker, options, thresholdSide)
     
 
