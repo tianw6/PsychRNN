@@ -12,8 +12,8 @@ addpath('/net/derived/tianwang/LabCode');
 % 
 
 % vanilla RNN
-temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/vanilla2022.mat").temp;
-checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdBasic.csv");
+% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/vanilla2022.mat").temp;
+% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdBasic.csv");
 
 % RNN with g0 additive
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gain3.mat").temp;
@@ -26,7 +26,7 @@ checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdBasic.csv");
 % % RNN with multiplicative gain
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM2022.mat").temp;
 % checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain4Multiply.csv");
-
+% 
 
 % initial bias
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/init2022.mat").temp;
@@ -35,6 +35,12 @@ checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdBasic.csv");
 % delay
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/delayCorr.mat").temp;
 % checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdDelayCorr.csv");
+
+
+% % RNN with input bias
+temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/inputBias2023.mat").temp;
+checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdInputBias.csv");
+
 
 % On Tian's PC (for checkerPmd)
 
@@ -99,8 +105,6 @@ end
 
 %% plot pca plots: 
 
-figure;
-set(gcf,'position',[1000,1000,2000,600])
 
 
 
@@ -112,9 +116,9 @@ options.rtThreshold = prctile(RTR,50);
 
 % vanilla: [-111,65];
 % multiplicative: [100 -41];
-% initial condiiton: [-140,62];
-% delay: [-153,56]
-options.viewAngle = [-111,65];
+% initial condiiton: [-111,65];
+% delay: [-111,65]
+options.viewAngle = [100,-42];
 options.orthDim = [1 2 3];
 % figure handle; before & after; switch between coh and RT pca; RT bins
 generatePCA(alignState, checker, options);
@@ -122,6 +126,9 @@ generatePCA(alignState, checker, options);
 
 %% plot RT regression
 
+%%%%%%%%%%%%%%%%%%%%%%%% calculate regression every 5 time points
+figure;
+set(gcf,'position',[1000,1000,2000,600])
 
 % figure handle; 
 [r2, r2_coh] = predictRT(alignState, checker);
@@ -135,8 +142,8 @@ t = linspace(-before, after, length(r2));
 % initial: [0 0.8];
 % delay: [0.4 0.8]
 
-yLower = 0;
-yUpper = 0.7;
+yLower = 0.2;
+yUpper = 0.8;
 
 ylimit = [yLower, yUpper]
 xpatch = [-before -before 0 0];
@@ -146,7 +153,8 @@ p1.FaceAlpha = 0.2;
 p1.EdgeAlpha = 0;
 
 % plot(t, bounds', '--', 'linewidth', 5);
-plot(t(1:5:end), r2(1:5:end), 'linewidth', 5, 'color', [236 112  22]./255)
+% plot(t(1:4:end), r2(1:4:end), 'linewidth', 5, 'color', [236 112  22]./255)
+
 yline(r2_coh, '--')
 
 plot([0,0], ylimit, 'color', [0.5 0.5 0.5], 'linestyle', '--', 'linewidth',5)

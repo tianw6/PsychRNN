@@ -24,9 +24,9 @@ addpath('/net/derived/tianwang/LabCode');
 
 
 % % RNN with multiplicative gain
-temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM2022.mat").temp;
-checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain4Multiply.csv");
-
+% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM2022.mat").temp;
+% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain4Multiply.csv");
+% 
 
 % initial bias
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/init2022.mat").temp;
@@ -35,6 +35,12 @@ checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain4Multiply.csv");
 % delay
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/delayCorr.mat").temp;
 % checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdDelayCorr.csv");
+
+
+% % RNN with input bias
+temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/inputBias2023.mat").temp;
+checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdInputBias.csv");
+
 
 % On Tian's PC (for checkerPmd)
 
@@ -87,7 +93,7 @@ checkerOnR = round(checkerOn + targetOn, -1);
 % state activity alignes to checkerboard onset, with 200ms before and 800
 % ms after
 before = 200;
-after = 500;
+after = 800;
 
 alignState = [];
 for ii = 1 : c
@@ -147,7 +153,9 @@ p1.FaceAlpha = 0.2;
 p1.EdgeAlpha = 0;
 
 % plot(t, bounds', '--', 'linewidth', 5);
-plot(t(1:4:end), r2(1:4:end), 'linewidth', 5, 'color', [236 112  22]./255)
+% plot(t(1:4:end), r2(1:4:end), 'linewidth', 5, 'color', [236 112  22]./255)
+plot(t, r2, 'linewidth', 5, 'color', [236 112  22]./255)
+
 yline(r2_coh, '--')
 
 plot([0,0], ylimit, 'color', [0.5 0.5 0.5], 'linestyle', '--', 'linewidth',5)
