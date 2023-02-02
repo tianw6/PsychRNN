@@ -15,7 +15,7 @@ class Checkerboard2AFC(Task):
 
     On each trial the network receives 2 simultaneous inputs
 
-    input 1: left tartet red (-1) or green (+1)
+    input 1: left target red (-1) or green (+1)
     input 2: right target red (-1) or green (+1)
     input 3: color coherence (continuous)
         1: completely red
