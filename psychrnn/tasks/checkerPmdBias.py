@@ -53,7 +53,7 @@ class InputBias(Task):
         target_onset=[250, 500],
         checker_onset=[500, 1000],
         accumulation_mask=300,
-        wait = [0,0.4],
+        wait = [0.8, 1.2],
     ):
 
         super().__init__(2, 2, dt, tau, T, N_batch)
@@ -163,11 +163,13 @@ class InputBias(Task):
         ######################## Tian added this: make x have a gain 
 
         x_t[:] = init_x
+        # x_t[:] = 0.5*init_x
+
 
         if t > target_onset + checker_onset:
             x_t[:] = (params["noise"] ** 2) * np.sqrt(self.dt) * np.random.randn(2)
 
-            x_t[0] += coherence  
+            x_t[0] += coherence   
             x_t[1] += 1-coherence
 
         # ----------------------------------
