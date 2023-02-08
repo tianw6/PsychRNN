@@ -12,8 +12,8 @@ addpath('/net/derived/tianwang/LabCode');
 % 
 
 % vanilla RNN
-% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/vanilla2022.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdBasic.csv");
+temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/newPMd.mat").temp;
+checker = readtable("~/code/behaviorRNN/PsychRNN/newPMd.csv");
 
 % RNN with g0 additive
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gain3.mat").temp;
@@ -38,9 +38,9 @@ addpath('/net/derived/tianwang/LabCode');
 
 
 % % RNN with input bias
-temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/inputBias2023.mat").temp;
-checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdInputBias.csv");
-
+% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/inputBias2023.mat").temp;
+% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdInputBias.csv");
+% 
 
 % On Tian's PC (for checkerPmd)
 
@@ -93,7 +93,7 @@ checkerOnR = round(checkerOn + targetOn, -1);
 % state activity alignes to checkerboard onset, with 200ms before and 800
 % ms after
 before = 200;
-after = 800;
+after = 1000;
 
 alignState = [];
 for ii = 1 : c
