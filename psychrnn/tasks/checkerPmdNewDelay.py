@@ -187,7 +187,8 @@ class Checkerboard2AFC(Task):
 
         # apply a delay on y: delay applied on x plus another 100ms
         y_t = np.zeros(self.N_out) + self.wait
-
+        
+        # add a delay of output when compared to input
         if t > target_onset + checker_onset + delay + 100:
             y_t[correct_side] = self.hi
             y_t[abs(correct_side - 1)] = self.lo

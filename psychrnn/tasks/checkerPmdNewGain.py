@@ -9,7 +9,7 @@ Change the model to be 2 inputs: Il and Ir: represent the left and right evidenc
 """
 
 
-class Init(Task):
+class Checkerboard2AFC(Task):
     """Checkerboard 2AFC task.
 
     On each trial the network receives four simultaneous inputs
@@ -53,6 +53,7 @@ class Init(Task):
         target_onset=[250, 500],
         checker_onset=[500, 1000],
         accumulation_mask=300,
+        gainRange = [0,1],
     ):
 
         # Tian changed this: change the input to be 3 entries
@@ -65,12 +66,10 @@ class Init(Task):
         self.decision_threshold = 0.7
         self.post_decision_baseline = 0.2
 
-        self.wait = wait
+        self.wait = 0.2
         self.hi = 1
         self.lo = 0
-
-        wait = [0,0.4],
-
+        self.gainRange = gainRange;
 
     def generate_trial_params(self, batch, trial):
         """Define parameters for each trial.
@@ -106,9 +105,7 @@ class Init(Task):
         params["target_onset"] = np.random.randint(self.target_onset[0], self.target_onset[1])
         params["checker_onset"] = np.random.randint(self.checker_onset[0], self.checker_onset[1])
 
-        params["init_x"] = np.random.uniform(self.wait[0], self.wait[1], 1)
-
-
+        params["gain"] = np.random.uniform(self.gainRange[0], self.gainRange[1])
         return params
 
     def trial_function(self, t, params):
@@ -153,8 +150,7 @@ class Init(Task):
         accumulation_mask = params["accumulation_mask"]
         coherence = params["coherence"]
 
-        init_x = params['init_x']
-
+        gain = params["gain"];
 
         if coherence > 0:
         	# 1: right side; 0: left side
@@ -166,11 +162,7 @@ class Init(Task):
         # Generate stimulus
         # ----------------------------------
 
-        # Add initial bias on only left trials
         x_t = np.zeros(self.N_in)
-
-        # add an initial bias                 
-        x_t[0] -= init_x
 
         if t > target_onset + checker_onset:
         	# add a noise term after checkerboard onset
@@ -179,15 +171,17 @@ class Init(Task):
         	# right coherence
             x_t[0] += coherence  
             # a gain term
-            x_t[1] += 0
+            x_t[1] += gain
 
         # ----------------------------------
         # Generate output and mask
         # ----------------------------------
 
-        y_t = np.zeros(self.N_out) + self.wait + 100
+        y_t = np.zeros(self.N_out) + self.wait
 
-        if t > target_onset + checker_onset:
+        # add a delay of output when compared to input; which is negatively correlated to gain 
+        delay = (1-gain)*300;
+        if t > target_onset + checker_onset + delay:
             y_t[correct_side] = self.hi
             y_t[abs(correct_side - 1)] = self.lo
 

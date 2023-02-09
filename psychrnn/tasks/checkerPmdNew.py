@@ -157,14 +157,7 @@ class Checkerboard2AFC(Task):
         # Generate stimulus
         # ----------------------------------
 
-        # Tian edited  this: remove the 3rd and 4th entry of input
-
-
-        ######################################################################################## ERROR 
         x_t = np.zeros(self.N_in)
-        # x_t[:] = (params["noise"] ** 2) * np.sqrt(self.dt) * np.random.randn(2)
-
-                             
 
         if t > target_onset + checker_onset:
         	# add a noise term after checkerboard onset
@@ -181,7 +174,8 @@ class Checkerboard2AFC(Task):
 
         y_t = np.zeros(self.N_out) + self.wait
 
-        if t > target_onset + checker_onset:
+        # add a delay of output when compared to input
+        if t > target_onset + checker_onset+ 100:
             y_t[correct_side] = self.hi
             y_t[abs(correct_side - 1)] = self.lo
 
