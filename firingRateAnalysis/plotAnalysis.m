@@ -12,8 +12,8 @@ addpath('/net/derived/tianwang/LabCode');
 % 
 
 % vanilla RNN
-temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/newPMd.mat").temp;
-checker = readtable("~/code/behaviorRNN/PsychRNN/newPMd.csv");
+% temp = load("~/code/behaviorRNN/PsychRNN/temp.mat").temp;
+% checker = readtable("~/code/behaviorRNN/PsychRNN/oldPMd.csv");
 
 % RNN with g0 additive
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gain3.mat").temp;
@@ -24,9 +24,9 @@ checker = readtable("~/code/behaviorRNN/PsychRNN/newPMd.csv");
 
 
 % % RNN with multiplicative gain
-% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM2022.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdGain4Multiply.csv");
-% 
+temp = load("~/code/behaviorRNN/PsychRNN/gain.mat").temp;
+checker = readtable("~/code/behaviorRNN/PsychRNN/newGain.csv");
+
 
 % initial bias
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/init2022.mat").temp;
@@ -93,7 +93,7 @@ checkerOnR = round(checkerOn + targetOn, -1);
 % state activity alignes to checkerboard onset, with 200ms before and 800
 % ms after
 before = 200;
-after = 1000;
+after = 800;
 
 alignState = [];
 for ii = 1 : c
@@ -142,8 +142,8 @@ t = linspace(-before, after, length(r2));
 % initial: [0 0.8];
 % delay: [0.4 0.8]
 
-yLower = 0.2;
-yUpper = 0.8;
+yLower = 0.0;
+yUpper = 0.6;
 
 ylimit = [yLower, yUpper]
 xpatch = [-before -before 0 0];
