@@ -4,7 +4,7 @@
 % aligned to checkerboard
 clear all; close all; clc
 
-addpath('/net/derived/tianwang/LabCode');
+% addpath('/net/derived/tianwang/LabCode');
 
 % On linux work station (for checkerPmd)
 
@@ -24,8 +24,8 @@ addpath('/net/derived/tianwang/LabCode');
 
 
 % % RNN with multiplicative gain
-temp = load("~/code/behaviorRNN/PsychRNN/gain.mat").temp;
-checker = readtable("~/code/behaviorRNN/PsychRNN/newGain.csv");
+% temp = load("~/code/behaviorRNN/PsychRNN/gain.mat").temp;
+% checker = readtable("~/code/behaviorRNN/PsychRNN/newGain.csv");
 
 
 % initial bias
@@ -50,8 +50,8 @@ checker = readtable("~/code/behaviorRNN/PsychRNN/newGain.csv");
 
 
 % RNN with multiplicative gain
-% temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\gainM2022.mat").temp;
-% checker = readtable("D:/BU/chandLab/PsychRNN/checkerPmdGain4Multiply.csv");
+temp = load("D:\BU\ChandLab\PsychRNN\gain.mat").temp;
+checker = readtable("D:/BU/chandLab/PsychRNN/gainM.csv");
 
 % initial bias
 % temp = load("D:\BU\ChandLab\PsychRNN\temp.mat").temp;
@@ -93,7 +93,7 @@ checkerOnR = round(checkerOn + targetOn, -1);
 % state activity alignes to checkerboard onset, with 200ms before and 800
 % ms after
 before = 200;
-after = 800;
+after = 500;
 
 alignState = [];
 for ii = 1 : c
