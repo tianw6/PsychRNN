@@ -4,7 +4,7 @@ import numpy as np
 """
 Edited from the PsychRNN Perceptual Discrimination Task.
 
-Tian Wang, Mar.19th 2022
+Tian Wang, June.1th 2023
 
 
 """
@@ -15,8 +15,8 @@ class Checkerboard2AFC(Task):
 
     On each trial the network receives 2 simultaneous inputs
 
-    input 1: left tartet red (-1) or green (+1)
-    input 2: right target red (-1) or green (+1)
+    input 1: left target red (1) or green (-1)
+    input 2: right target red (1) or green (-1)
     input 3: color coherence (continuous)
         1: completely red
         -1: completely green
@@ -157,16 +157,21 @@ class Checkerboard2AFC(Task):
         accumulation_mask = params["accumulation_mask"]
         coherence = params["coherence"]
         green_side = params["side"]
-        correct_side = green_side if coherence > 0 else abs(green_side - 1)
+        correct_side = green_side if coherence < 0 else abs(green_side - 1)
 
         # ----------------------------------
         # Generate stimulus
         # ----------------------------------
 
+
+        # green_side = 0: left is green; x[0] = -1; x[1] = 1
+        # green_side = 1: right is green; x[0] = 1; x[1] = -1
         x_t = np.zeros(self.N_in)
         if t > target_onset:
-            x_t[0] = 2 * green_side - 1
+
+            x_t[0] = 2 * green_side - 1 
             x_t[1] = -(2 * green_side - 1)
+
         if t > target_onset + checker_onset:
             x_t[2:] = (params["noise"] ** 2) * np.sqrt(self.dt) * np.random.randn(1)
             x_t[2] += coherence
