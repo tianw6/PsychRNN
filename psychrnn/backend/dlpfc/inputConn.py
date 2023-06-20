@@ -15,7 +15,7 @@ import numpy as np
 tf.compat.v1.disable_eager_execution()
 
 
-class Basic2(Basic):
+class InputConn(Basic):
     """The basic continuous time recurrent neural network model.
 
     Slightly edited version of the Basic RNN of :class:`psychrnn.backend.models.basic.Basic`
@@ -34,6 +34,7 @@ class Basic2(Basic):
             "output_transfer_function", tf.nn.relu
         )
         self.decision_threshold = params.get("decision_threshold", np.inf)
+        self.input_conn = params['input_conn']
 
     def recurrent_timestep(self, rnn_in, state):
         """Recurrent time step.
@@ -74,7 +75,7 @@ class Basic2(Basic):
             * (
                 tf.matmul(self.transfer_function(state), self.get_effective_W_rec(), transpose_b=True, name="1")
                 + tf.matmul(
-                    rnn_in, self.get_effective_W_in(), transpose_b=True, name="2"
+                    rnn_in, self.get_effective_W_in()*self.input_conn, transpose_b=True, name="2"
                 )
                 + self.b_rec
             )

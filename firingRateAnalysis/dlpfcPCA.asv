@@ -34,7 +34,7 @@ checkerOnR = round(checkerOn + targetOn, -1);
 % state activity alignes to targets onset, with 100ms before and 1500
 % ms after
 before = 100;
-after = 1500;
+after = 1000;
 
 alignState = [];
 for ii = 1 : c
@@ -106,7 +106,6 @@ for thi = 1:m
     orthF(:,:,thi) = (score((1:t) + (thi-1)*t,:))';
 end
 
-% specifiy the dimensions to plot
 traj = orthF([1,2,3], :, :);
 RLTraj = traj(:,:,1);
 RRTraj = traj(:,:,2);

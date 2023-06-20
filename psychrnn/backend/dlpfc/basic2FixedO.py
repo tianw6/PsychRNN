@@ -5,8 +5,8 @@
 
 from __future__ import division
 
-from psychrnn.backend.rnn import RNN
-from psychrnn.backend.models.basic import Basic
+from psychrnn.backend.rnnFixedO import RNN
+from psychrnn.backend.models.basicFixedO import Basic
 from psychrnn.backend.regularizations import Regularizer
 from psychrnn.backend.loss_functions import LossFunction
 import tensorflow as tf

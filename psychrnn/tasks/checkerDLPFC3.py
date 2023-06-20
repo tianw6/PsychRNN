@@ -4,7 +4,7 @@ import numpy as np
 """
 Edited from the PsychRNN Perceptual Discrimination Task.
 
-Tian Wang, Mar.19th 2022
+Tian Wang, June.1th 2023
 
 
 """
@@ -15,8 +15,13 @@ class Checkerboard2AFC(Task):
 
     On each trial the network receives 2 simultaneous inputs
 
+<<<<<<< HEAD
     input 1: left target red (-1) or green (+1)
     input 2: right target red (-1) or green (+1)
+=======
+    input 1: left target red (1) or green (-1)
+    input 2: right target red (1) or green (-1)
+>>>>>>> f83d35f00053236b5b4fd4799b1646597cdc2e65
     input 3: color coherence (continuous)
         1: completely red
         -1: completely green
@@ -47,6 +52,8 @@ class Checkerboard2AFC(Task):
 
     def __init__(
         self,
+        N_in,
+        N_out,
         dt,
         tau,
         T,
@@ -64,7 +71,7 @@ class Checkerboard2AFC(Task):
 
         ################################################### Tian added this: 3 inputs in network
 
-        super().__init__(3, 2, dt, tau, T, N_batch)
+        super().__init__(N_in, N_out, dt, tau, T, N_batch)
         self.coherence = coherence
         self.side = side
         self.noise = noise
@@ -157,16 +164,21 @@ class Checkerboard2AFC(Task):
         accumulation_mask = params["accumulation_mask"]
         coherence = params["coherence"]
         green_side = params["side"]
-        correct_side = green_side if coherence > 0 else abs(green_side - 1)
+        correct_side = green_side if coherence < 0 else abs(green_side - 1)
 
         # ----------------------------------
         # Generate stimulus
         # ----------------------------------
 
+
+        # green_side = 0: left is green; x[0] = -1; x[1] = 1
+        # green_side = 1: right is green; x[0] = 1; x[1] = -1
         x_t = np.zeros(self.N_in)
         if t > target_onset:
-            x_t[0] = 2 * green_side - 1
+
+            x_t[0] = 2 * green_side - 1 
             x_t[1] = -(2 * green_side - 1)
+
         if t > target_onset + checker_onset:
             x_t[2:] = (params["noise"] ** 2) * np.sqrt(self.dt) * np.random.randn(1)
             x_t[2] += coherence
