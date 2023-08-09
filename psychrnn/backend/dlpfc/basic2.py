@@ -103,6 +103,7 @@ class Basic2(Basic):
         )
 
         if self.output_transfer_function is not None:
+
             output = self.output_transfer_function(output)
 
         return output

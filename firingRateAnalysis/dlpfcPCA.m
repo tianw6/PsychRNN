@@ -1,10 +1,10 @@
 clear all; close all; clc
 
-% temp = load("~/code/behaviorRNN/PsychRNN/2Areas.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerDLPFC3Test2Areas.csv");
+temp = load("~/code/behaviorRNN/PsychRNN/temp.mat").temp;
+checker = readtable("~/code/behaviorRNN/PsychRNN/checkerDLPFC3Test.csv");
 
-temp = load("D:\BU\ChandLab\PsychRNN\2Areas.mat").temp;
-checker = readtable("D:\BU\ChandLab\PsychRNN\checkerDLPFC32Areas.csv");
+% temp = load("D:\BU\ChandLab\PsychRNN\2Areas.mat").temp;
+% checker = readtable("D:\BU\ChandLab\PsychRNN\checkerDLPFC32Areas.csv");
 
 %% only choose trials with 95% RT
 th = 0.8;
@@ -133,7 +133,7 @@ plot3(GRTraj(1,che), GRTraj(2,che), GRTraj(3,che), 'm.', 'markersize', 30);
 
 %% plot psth 
 time = (-before:10: after);
-for id = 41:size(firingRateAverage,1)
+for id = 1:size(firingRateAverage,1)
    figure; hold on
    
    plot(time, squeeze(firingRateAverage(id,1,1,:)), 'r-')
