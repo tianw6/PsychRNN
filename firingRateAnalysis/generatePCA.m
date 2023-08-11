@@ -1,7 +1,10 @@
 % Created by Tian Wang on Dec.29th 2022: plot pca trajectories
 
 
-function generatePCA(alignState, checker, options)
+function trajs = generatePCA(alignState, checker, options)
+
+% export source excel data
+trajs = struct;
 
 addpath('/net/derived/tianwang/LabCode');
 
@@ -95,12 +98,18 @@ if (strcmp(type, 'coh') == 1)
         % mark the RT (end time)
         plot3(rightTrajAve(1,rightAveRT), rightTrajAve(2,rightAveRT),rightTrajAve(3,rightAveRT), 'color', 'k', 'marker', '.', 'markersize', 25);
 
+        
+       
     %     pause()
     end
     
 
 end
 %% based on RT
+
+
+
+
 
 if (strcmp(type, 'RT') == 1)
 
@@ -133,7 +142,7 @@ if (strcmp(type, 'RT') == 1)
     % ]
 
 
-    rt = [prctile(RTR,[0:15:90 100])];
+    rt = [prctile(RTR,[0:12.5:100])];
 
     
     cc = [
@@ -203,6 +212,10 @@ if (strcmp(type, 'RT') == 1)
     %     
     %     distV(ii,:) = (sum(abs(nanmean(abs(orthF(1:10,:,iXl(Nl))),3)-nanmean(abs(orthF(1:10,:,iXr(Nr))),3))));
 
+    
+        trajs(ii).leftTrajAve = leftTrajAve(1:3,1:leftAveRT)';
+        trajs(ii).rightTrajAve = rightTrajAve(1:3,1:rightAveRT)';
+        
 
     end
     
@@ -236,6 +249,9 @@ if (strcmp(type, 'RT') == 1)
     tv.update();
     rotate3d on;
     
+    
+    ax = gca;
+    ax.SortMethod = 'childorder';
     % print('-painters','-depsc',['~/Desktop/', 'PCAdelayC','.eps'], '-r300');
     
 %     axis equal

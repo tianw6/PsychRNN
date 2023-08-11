@@ -4,7 +4,7 @@
 % aligned to checkerboard
 clear all; close all; clc
 
-% addpath('/net/derived/tianwang/LabCode');
+addpath('/net/derived/tianwang/LabCode');
 
 % On linux work station (for checkerPmd)
 
@@ -12,8 +12,8 @@ clear all; close all; clc
 % 
 
 % vanilla RNN
-% temp = load("~/code/behaviorRNN/PsychRNN/temp.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/oldPMd.csv");
+% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/vanilla2022.mat").temp;
+% checker = readtable("~/Downloads/PsychRNN0104/checkerPmdBasic.csv");
 
 % RNN with g0 additive
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gain3.mat").temp;
@@ -24,23 +24,47 @@ clear all; close all; clc
 
 
 % % RNN with multiplicative gain
-% temp = load("~/code/behaviorRNN/PsychRNN/gain.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/newGain.csv");
+% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM2022.mat").temp;
+% checker = readtable("~/Downloads/PsychRNN0104/checkerPmdGain4Multiply.csv");
+
+% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/gainM2022.mat").temp;
+% checker = readtable("~/Downloads/PsychRNN0104/checkerPmdGain4Multiply.csv");
+
+
+whichModel = 'inputbias2023';
+switch(lower(whichModel))
+    case 'gainm2023'
+        temp = load('~/Downloads/PsychRNN0104/resultData/gainM20230809.mat').temp;
+        checker = readtable("~/Downloads/PsychRNN0104/resultData/gainM20230809.csv");
+    case 'delay2023'
+        temp = load('~/Downloads/PsychRNN0104/resultData/delay20230809.mat').temp;
+        checker = readtable("~/Downloads/PsychRNN0104/resultData/delay20230809.csv");
+    case 'vanilla2023'
+        temp = load('~/Downloads/PsychRNN0104/resultData/vanilla20230809.mat').temp;
+        checker = readtable("~/Downloads/PsychRNN0104/resultData/vanilla20230809.csv");
+    case 'leftbias2023'
+        temp = load('~/Downloads/PsychRNN0104/resultData/leftBias20230809.mat').temp;
+        checker = readtable("~/Downloads/PsychRNN0104/resultData/leftBias20230809.csv");
+    case 'inputbias2023'
+        temp = load('~/Downloads/PsychRNN0104/resultData/inputBias20230809.mat').temp;
+        checker = readtable("~/Downloads/PsychRNN0104/resultData/inputBias20230809.csv");
+    case 'inputbias402023'
+        temp = load('~/Downloads/PsychRNN0104/resultData/inputBias4020230809.mat').temp;
+        checker = readtable("~/Downloads/PsychRNN0104/resultData/inputBias4020230809.csv");
+
+        
+end
+        
+  
 
 
 % initial bias
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/init2022.mat").temp;
-% checker = readtable("/home/tianwang/code/behaviorRNN/PsychRNN/checkerPmdInit.csv");
+% checker = readtable("/home/tianwang/Downloads/PsychRNN0104/checkerPmdInit.csv");
 
 % delay
 % temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/delayCorr.mat").temp;
 % checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdDelayCorr.csv");
-
-
-% % RNN with input bias
-% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/inputBias2023.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdInputBias.csv");
-% 
 
 % On Tian's PC (for checkerPmd)
 
@@ -50,8 +74,8 @@ clear all; close all; clc
 
 
 % RNN with multiplicative gain
-temp = load("D:\BU\ChandLab\PsychRNN\gain.mat").temp;
-checker = readtable("D:/BU/chandLab/PsychRNN/gainM.csv");
+% temp = load("D:\BU\ChandLab\PsychRNNArchive\stateActivity\gainM2022.mat").temp;
+% checker = readtable("D:/BU/chandLab/PsychRNN/checkerPmdGain4Multiply.csv");
 
 % initial bias
 % temp = load("D:\BU\ChandLab\PsychRNN\temp.mat").temp;
@@ -65,7 +89,19 @@ checker = readtable("D:/BU/chandLab/PsychRNN/gainM.csv");
 sortRT = sort(checker.decision_time);
 disp("95% RT threshold is: " + num2str(sortRT(5000*0.95)))
 % rtThresh = checker.decision_time <= sortRT(5000*0.95);
-rtThresh = checker.decision_time >= 0 & checker.decision_time < sortRT(size(checker,1)*0.95);
+
+rtLower = prctile(sortRT(sortRT > 0),2.5)
+% rtLower = 0;
+rtUpper = prctile(sortRT(sortRT > 0),97.5)
+
+unitsChosen = 20;
+% threshold of fast vs slow RT in prediction choice
+rtThres = 50;
+
+before = 200;
+after = 500;
+
+rtThresh = checker.decision_time >= rtLower & checker.decision_time < rtUpper;
 checker = checker(rtThresh, :);
 temp = temp(:,:,rtThresh);
 
@@ -92,8 +128,6 @@ checkerOnR = round(checkerOn + targetOn, -1);
 
 % state activity alignes to checkerboard onset, with 200ms before and 800
 % ms after
-before = 200;
-after = 500;
 
 alignState = [];
 for ii = 1 : c
@@ -106,13 +140,13 @@ end
 %% plot pca plots: 
 
 
-
-
+% how many units used to regress RT
+% options of figure plotting 
 options.handle = subplot(1,3,1);
 options.span = [-before, after];
 options.type = 'RT';
 % options.rtBin = 50:50:400;
-options.rtThreshold = prctile(RTR,50);
+options.rtThreshold = prctile(RTR,rtThres);
 
 % vanilla: [-111,65];
 % multiplicative: [100 -41];
@@ -121,7 +155,11 @@ options.rtThreshold = prctile(RTR,50);
 options.viewAngle = [100,-42];
 options.orthDim = [1 2 3];
 % figure handle; before & after; switch between coh and RT pca; RT bins
-generatePCA(alignState, checker, options);
+
+
+
+
+trajs = generatePCA(alignState, checker, options);
 
 
 %% plot RT regression
@@ -131,7 +169,7 @@ figure;
 set(gcf,'position',[1000,1000,2000,600])
 
 % figure handle; 
-[r2, r2_coh] = predictRT(alignState, checker);
+[r2, r2_coh] = predictRTregress(alignState, checker, unitsChosen);
 
 subplot(1,3,2); hold on
 
@@ -142,7 +180,7 @@ t = linspace(-before, after, length(r2));
 % initial: [0 0.8];
 % delay: [0.4 0.8]
 
-yLower = 0.0;
+yLower = 0.1;
 yUpper = 0.6;
 
 ylimit = [yLower, yUpper]
@@ -153,9 +191,7 @@ p1.FaceAlpha = 0.2;
 p1.EdgeAlpha = 0;
 
 % plot(t, bounds', '--', 'linewidth', 5);
-% plot(t(1:4:end), r2(1:4:end), 'linewidth', 5, 'color', [236 112  22]./255)
 plot(t, r2, 'linewidth', 5, 'color', [236 112  22]./255)
-
 yline(r2_coh, '--')
 
 plot([0,0], ylimit, 'color', [0.5 0.5 0.5], 'linestyle', '--', 'linewidth',5)
@@ -203,12 +239,9 @@ axis tight;
 
 % figure handle;fast or slow
 
-
-
 accuracy_fast = predictChoice(alignState, checker, options, 'less');
 accuracy_slow = predictChoice(alignState, checker, options, 'greater');
 t = linspace(-before, after, length(accuracy_fast));
-
 
 % plot fast trials decoding accuracy
 subplot(1,3,3); hold on
@@ -277,19 +310,39 @@ axis off;
 axis square;
 axis tight;
 
-% print('-painters','-depsc',['~/Desktop/', 'DecoderdelayC','.eps'], '-r300');
 
 
 
 %% store figure
 
-% print('-painters','-depsc',['~/Desktop/', 'gainM','.eps'], '-r300');
+% print('-painters','-depsc',['~/Desktop/', 'gainm20230809','.eps'], '-r300');
 
 
+%% 
 
+% export source excel data
+bigT = [t', r2, r2_coh.*ones(length(r2),1), accuracy_fast, accuracy_slow];
 
+T1 = array2table(bigT, 'VariableNames',{'t','r2','r2_coh','acc_fast','acc_slow'});
 
+bigDL = [];
+bigDR = [];
+currDL = [];
+currDR = [];
+for jj = 1:length(trajs)
+    
+    currDL = [trajs(jj).leftTrajAve];
+    currDL(:,end+1) = jj;
+    bigDL = [bigDL; currDL];
+    
+    currDR = [trajs(jj).rightTrajAve];
+    currDR(:,end+1) = jj;
+    bigDR = [bigDR; currDR];    
+end
 
+T2 = array2table(bigDL, 'VariableNames',{'leftx','lefty','leftz', 'rtbin'});
+T3 = array2table(bigDR, 'VariableNames',{'rightx','righty', 'rightz', 'rtbin'});
 
-
-
+% writetable(T1, '~/Desktop/sourceData/RNN_sim/gainmplot.xlsx');
+% writetable(T2, '~/Desktop/sourceData/RNN_sim/gainmLeftTraj.xlsx');
+% writetable(T3, '~/Desktop/sourceData/RNN_sim/gainmRightTraj.xlsx');

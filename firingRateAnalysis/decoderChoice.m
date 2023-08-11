@@ -29,12 +29,12 @@ clear all; close all; clc
 % 
 
 % initial bias
-temp = load("/home/tianwang/code/behaviorRNN/PsychRNN/temp.mat").temp;
-checker = readtable("/home/tianwang/code/behaviorRNN/PsychRNN/checkerPmdInit.csv");
+% temp = load("/home/tianwang/code/behaviorRNN/PsychRNN/temp.mat").temp;
+% checker = readtable("/home/tianwang/code/behaviorRNN/PsychRNN/checkerPmdInit.csv");
 
 % delay
-% temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/delayCorr.mat").temp;
-% checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdDelayCorr.csv");
+temp = load("/net/derived/tianwang/psychRNNArchive/stateActivity/delayCorr.mat").temp;
+checker = readtable("~/code/behaviorRNN/PsychRNN/checkerPmdDelayCorr.csv");
 
 
 % On Tian's PC (for checkerPmd)

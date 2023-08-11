@@ -28,7 +28,7 @@ function [accuracy] = predictChoice1(alignState, checker, options, thresholdSide
         c2Trials = find(checker.decision == 1 & RT > rtThreshold);
     end
     
-    
+    % equalize left and right trials
     num = min(length(c1Trials), length(c2Trials));
 
     index1 = randperm(length(c1Trials));
@@ -42,8 +42,10 @@ function [accuracy] = predictChoice1(alignState, checker, options, thresholdSide
     train_x = alignState(:, :, extract);
     train_y = checker.decision(extract) - 1;
 
-    for ii = 1 : size(train_x,2)
-        fprintf('%d.\n',ii);
+    parfor ii = 1 : size(train_x,2)
+        if mod(ii,10) == 0
+            fprintf('%d.',ii);
+        end
         t1 = [squeeze(train_x(:,ii,:))'];
 
         md1 = fitclinear(t1, train_y, 'learner', 'logistic', 'KFold', 10);

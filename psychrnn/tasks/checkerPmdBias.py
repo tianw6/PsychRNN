@@ -53,7 +53,7 @@ class InputBias(Task):
         target_onset=[250, 500],
         checker_onset=[500, 1000],
         accumulation_mask=300,
-        wait = [0.8, 1.2],
+        wait = [0, 0.3],
     ):
 
         super().__init__(2, 2, dt, tau, T, N_batch)

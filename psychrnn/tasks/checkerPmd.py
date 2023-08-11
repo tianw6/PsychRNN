@@ -160,8 +160,7 @@ class Checkerboard2AFC(Task):
         # Tian edited  this: remove the 3rd and 4th entry of input
 
 
-        ######################################################################################## ERROR 
-        x_t = 0.5*np.ones(self.N_in)
+        x_t = np.zeros(self.N_in)
         # x_t[:] = (params["noise"] ** 2) * np.sqrt(self.dt) * np.random.randn(2)
 
                              
