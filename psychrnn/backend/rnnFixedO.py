@@ -205,17 +205,24 @@ class RNN(ABC):
                     initializer=self.initializer.get('W_rec'),
                     trainable=self.W_rec_train)
 
+
+            # Recurrent bias:
+            self.b_rec = tf.compat.v1.get_variable('b_rec', [N_rec], initializer=self.initializer.get('b_rec'),
+                                         trainable=self.b_rec_train)
+
+            ################################ Tian changed this
+            ### make output weights to be all 1s; output bias to all 0s
+
             # Output weight matrix:
             self.W_out = tf.compat.v1.get_variable('W_out', [N_out, N_rec],
                                          initializer=self.initializer.get('W_out'),
                                          trainable=self.W_out_train)
 
-            # Recurrent bias:
-            self.b_rec = tf.compat.v1.get_variable('b_rec', [N_rec], initializer=self.initializer.get('b_rec'),
-                                         trainable=self.b_rec_train)
             # Output bias:
-            self.b_out = tf.compat.v1.get_variable('b_out', [N_out], initializer=self.initializer.get('b_out'),
+            self.b_out = tf.compat.v1.get_variable('b_out', [N_out], initializer=tf.zeros_initializer(),
                                          trainable=self.b_out_train)
+
+            ################################
 
             # ------------------------------------------------
             # Non-trainable variables:

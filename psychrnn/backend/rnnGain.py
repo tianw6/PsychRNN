@@ -1,3 +1,5 @@
+# Tian added this: run a RNN model with gain term
+
 from __future__ import division
 from __future__ import print_function
 
@@ -172,6 +174,9 @@ class RNN(ABC):
         self.x = tf.compat.v1.placeholder("float", [None, N_steps, N_in])
         self.y = tf.compat.v1.placeholder("float", [None, N_steps, N_out])
         self.output_mask = tf.compat.v1.placeholder("float", [None, N_steps, N_out])
+        ########################################################
+        ## Tian edited this: add a gain as another placeholder
+        self.g = tf.compat.v1.placeholder("float", [None, N_steps, 1])       
 
         # --------------------------------------------------
         # Initialize variables in proper scope
@@ -550,14 +555,32 @@ class RNN(ABC):
             performance = performance_cutoff - 1
 
         while epoch * batch_size < training_iters and (performance_cutoff is None or performance < performance_cutoff):
-            batch_x, batch_y, output_mask, _ = next(trial_batch_generator)
-            self.sess.run(optimize, feed_dict={self.x: batch_x, self.y: batch_y, self.output_mask: output_mask})
+
+            # batch_x, batch_y, output_mask, _ = next(trial_batch_generator)
+
+            ######################################################## Tian edited this: generate batch of task with gain
+            batch_x, batch_y, output_mask, _, batch_g, _ = next(trial_batch_generator)
+            ########################################################
+            
+            # self.sess.run(optimize, feed_dict={self.x: batch_x, self.y: batch_y, self.output_mask: output_mask})
+            
+            ######################################################## Tian edited this: run model
+            self.sess.run(optimize, feed_dict={self.x: batch_x, self.y: batch_y, self.output_mask: output_mask, self.g: batch_g})
+            ########################################################
+
+
             # --------------------------------------------------
             # Output batch loss
             # --------------------------------------------------
             if epoch % loss_epoch == 0:
+                # reg_loss = self.sess.run(self.reg_loss,
+                #                 feed_dict={self.x: batch_x, self.y: batch_y, self.output_mask: output_mask})
+
+                ######################################################## Tian edited this reg loss
                 reg_loss = self.sess.run(self.reg_loss,
-                                feed_dict={self.x: batch_x, self.y: batch_y, self.output_mask: output_mask})
+                                feed_dict={self.x: batch_x, self.y: batch_y, self.output_mask: output_mask, self.g: batch_g})  
+                                
+
                 losses.append(reg_loss)
                 if verbosity:
                     print("Iter " + str(epoch * batch_size) + ", Minibatch Loss= " + \
@@ -634,7 +657,7 @@ class RNN(ABC):
 
         return losses, training_time, initialization_time
 
-    def test(self, trial_batch):
+    def test(self, x, g):
         """ Test the network on a certain task input.
 
         Arguments:
@@ -655,7 +678,14 @@ class RNN(ABC):
         # --------------------------------------------------
         # Run the forward pass on trial_batch
         # --------------------------------------------------
-        outputs, states = self.sess.run([self.predictions, self.states],
-                                        feed_dict={self.x: trial_batch})
 
+
+        # outputs, states = self.sess.run([self.predictions, self.states],
+        #                                 feed_dict={self.x: trial_batch})
+
+        ######################################################## Tian edited this
+        outputs, states = self.sess.run([self.predictions, self.states],
+                                        feed_dict={self.x: x, self.g: g})
+        ########################################################
+        
         return outputs, states
