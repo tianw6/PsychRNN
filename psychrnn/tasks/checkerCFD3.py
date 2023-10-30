@@ -62,7 +62,7 @@ class Checkerboard2AFC(Task):
         side=0.5,
 
         noise=0.25,
-        checkerDur=900,
+        checkerDur=2000,
         checker_onset=[125, 126], 
 
         delay = [400, 600], 
