@@ -165,6 +165,8 @@ class DelayedDiscrimination(Task):
         # Compute values
         # ----------------------------------
 
+
+
         if stimulus_1 <= t < delay:
             x_t[0] += self._scale_p(f1)
             x_t[1] += self._scale_n(f1)
